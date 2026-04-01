@@ -48,7 +48,7 @@ def apply_kernel_smoothing(data: pd.DataFrame, target_col: str = 'Temp', bw: str
     return y_pred
 
 def plot_time_series(data: pd.DataFrame, target_col: str, output_path: Path):
- """Plot raw time series """
+    """Plot raw time series """
     fig, ax = plt.subplots(figsize=(12, 6))
     
     ax.plot(data.index, data[target_col], color="#4A90A4", linewidth=1.2)
@@ -59,7 +59,7 @@ def plot_time_series(data: pd.DataFrame, target_col: str, output_path: Path):
     plt.close()
 
 def plot_knn_predictions(y_test: pd.Series, y_pred: np.ndarray, output_path: Path):
- """Plot KNN predictions vs actual """
+    """Plot KNN predictions vs actual """
     fig, ax = plt.subplots(figsize=(12, 6))
     
     ax.plot(y_test.index, y_test, label='Actual', color="#4A90A4", linewidth=1.2)
@@ -72,7 +72,7 @@ def plot_knn_predictions(y_test: pd.Series, y_pred: np.ndarray, output_path: Pat
     plt.close()
 
 def plot_kernel_smoothing(data: pd.DataFrame, y_pred: np.ndarray, target_col: str, output_path: Path):
- """Plot kernel smoothing results """
+    """Plot kernel smoothing results """
     fig, ax = plt.subplots(figsize=(12, 6))
     
     data_reset = data.reset_index()
