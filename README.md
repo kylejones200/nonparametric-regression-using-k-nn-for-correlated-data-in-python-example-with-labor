@@ -1,13 +1,50 @@
-# Nonparametric Regression using k NN for Correlated Data in Python example with labor
+# Nonparametric Regression with KNN for Correlated Data
 
-**Published:** 2025-03-30
-**Medium:** [https://medium.com/@kyle-t-jones/nonparametric-regression-using-k-nn-for-correlated-data-in-python-example-with-labor-1cb71a84479b](https://medium.com/@kyle-t-jones/nonparametric-regression-using-k-nn-for-correlated-data-in-python-example-with-labor-1cb71a84479b)
+This project demonstrates nonparametric regression methods including k-Nearest Neighbors (KNN) and kernel smoothing for time series data.
 
-## About
+## Article
 
-Place the code for this article in this repository.
-The original article export is saved as `article.md`.
+Medium article: [Nonparametric Regression using K-NN for Correlated Data](https://medium.com/@kylejones_47003/nonparametric-regression-using-k-nn-for-correlated-data-in-python-example-with-labor-1cb71a84479b)
 
-## Files
+## Project Structure
 
-Add your `.ipynb`, `.py`, `.yaml`, `.js`, `.ts`, or other project files here.
+```
+.
+├── README.md           # This file
+├── main.py            # Main entry point
+├── config.yaml        # Configuration file
+├── requirements.txt   # Python dependencies
+├── src/               # Core functions
+│   ├── core.py        # Nonparametric regression functions
+│   └── plotting.py    # Tufte-style plotting utilities
+├── tests/             # Unit tests
+├── data/              # Data files
+└── images/            # Generated plots and figures
+```
+
+## Configuration
+
+Edit `config.yaml` to customize:
+- Data source URL or local file
+- Feature engineering (max lag)
+- Model parameters (KNN neighbors, kernel bandwidth)
+- Train/test split date
+- Output settings
+
+## Methods
+
+### k-Nearest Neighbors (KNN)
+- Nonparametric regression using lag features
+- Predicts based on k nearest neighbors in feature space
+- Suitable for nonlinear relationships
+
+### Kernel Smoothing
+- Nonparametric smoothing using kernel regression
+- Automatically selects bandwidth via cross-validation
+- Captures underlying trend in noisy data
+
+## Caveats
+
+- By default, uses daily minimum temperature data from a public repository.
+- KNN performance depends on lag feature selection and number of neighbors.
+- Kernel smoothing bandwidth selection can be computationally intensive for large datasets.
