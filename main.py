@@ -55,7 +55,7 @@ def main():
     X_test = test.drop(config['data']['target_column'], axis=1)
     y_test = test[config['data']['target_column']]
     
-        knn = train_knn_regressor(X_train, y_train, config['model']['knn']['n_neighbors'])
+    knn = train_knn_regressor(X_train, y_train, config['model']['knn']['n_neighbors'])
     y_pred_knn = knn.predict(X_test)
     
     mse_knn = mean_squared_error(y_test, y_pred_knn)
@@ -63,7 +63,7 @@ def main():
     
     plot_knn_predictions(y_test, y_pred_knn, output_dir / 'knn_predictions.png')
     
-        y_pred_kernel = apply_kernel_smoothing(data, config['data']['target_column'],
+    y_pred_kernel = apply_kernel_smoothing(data, config['data']['target_column'],
                                            config['model']['kernel']['bandwidth'])
     
     plot_kernel_smoothing(data, y_pred_kernel, config['data']['target_column'],
@@ -75,5 +75,5 @@ if __name__ == "__main__":
     import pandas as pd
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-    main()
+main()
 
