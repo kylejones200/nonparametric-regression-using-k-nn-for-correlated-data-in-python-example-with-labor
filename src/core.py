@@ -47,43 +47,46 @@ def apply_kernel_smoothing(data: pd.DataFrame, target_col: str = 'Temp', bw: str
     y_pred, _ = kr.fit([data_reset['Time']])
     return y_pred
 
-def plot_time_series(data: pd.DataFrame, target_col: str, output_path: Path):
+def plot_time_series(data: pd.DataFrame, target_col: str, output_path: Path, plot: bool = False):
     """Plot raw time series """
-    fig, ax = plt.subplots(figsize=(12, 6))
+    if plot:
+        fig, ax = plt.subplots(figsize=(12, 6))
     
-    ax.plot(data.index, data[target_col], color="#4A90A4", linewidth=1.2)
-    ax.set_xlabel("Date")
-    ax.set_ylabel("Temperature (°C)")
+        ax.plot(data.index, data[target_col], color="#4A90A4", linewidth=1.2)
+        ax.set_xlabel("Date")
+        ax.set_ylabel("Temperature (°C)")
     
-    plt.savefig(output_path, dpi=100, bbox_inches="tight")
-    plt.close()
+        plt.savefig(output_path, dpi=100, bbox_inches="tight")
+        plt.close()
 
-def plot_knn_predictions(y_test: pd.Series, y_pred: np.ndarray, output_path: Path):
+def plot_knn_predictions(y_test: pd.Series, y_pred: np.ndarray, output_path: Path, plot: bool = False):
     """Plot KNN predictions vs actual """
-    fig, ax = plt.subplots(figsize=(12, 6))
+    if plot:
+        fig, ax = plt.subplots(figsize=(12, 6))
     
-    ax.plot(y_test.index, y_test, label='Actual', color="#4A90A4", linewidth=1.2)
-    ax.plot(y_test.index, y_pred, label='Predicted', color="#D4A574", linewidth=1.2)
-    ax.set_xlabel("Date")
-    ax.set_ylabel("Temperature (°C)")
-    ax.legend(loc='best')
+        ax.plot(y_test.index, y_test, label='Actual', color="#4A90A4", linewidth=1.2)
+        ax.plot(y_test.index, y_pred, label='Predicted', color="#D4A574", linewidth=1.2)
+        ax.set_xlabel("Date")
+        ax.set_ylabel("Temperature (°C)")
+        ax.legend(loc='best')
     
-    plt.savefig(output_path, dpi=100, bbox_inches="tight")
-    plt.close()
+        plt.savefig(output_path, dpi=100, bbox_inches="tight")
+        plt.close()
 
-def plot_kernel_smoothing(data: pd.DataFrame, y_pred: np.ndarray, target_col: str, output_path: Path):
+def plot_kernel_smoothing(data: pd.DataFrame, y_pred: np.ndarray, target_col: str, output_path: Path, plot: bool = False):
     """Plot kernel smoothing results """
-    fig, ax = plt.subplots(figsize=(12, 6))
+    if plot:
+        fig, ax = plt.subplots(figsize=(12, 6))
     
-    data_reset = data.reset_index()
-    ax.plot(data_reset['Date'], data_reset[target_col], label='Original', 
-           alpha=0.6, color="#4A90A4", linewidth=1.2)
-    ax.plot(data_reset['Date'], y_pred, label='Smoothed', 
-           color="#D4A574", linewidth=1.2)
-    ax.set_xlabel("Date")
-    ax.set_ylabel("Temperature (°C)")
-    ax.legend(loc='best')
+        data_reset = data.reset_index()
+        ax.plot(data_reset['Date'], data_reset[target_col], label='Original', 
+               alpha=0.6, color="#4A90A4", linewidth=1.2)
+        ax.plot(data_reset['Date'], y_pred, label='Smoothed', 
+               color="#D4A574", linewidth=1.2)
+        ax.set_xlabel("Date")
+        ax.set_ylabel("Temperature (°C)")
+        ax.legend(loc='best')
     
-    plt.savefig(output_path, dpi=100, bbox_inches="tight")
-    plt.close()
+        plt.savefig(output_path, dpi=100, bbox_inches="tight")
+        plt.close()
 
