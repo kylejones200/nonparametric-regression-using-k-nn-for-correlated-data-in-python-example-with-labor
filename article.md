@@ -1,41 +1,29 @@
+---
+author: "Kyle Jones"
+date_published: "March 30, 2025"
+date_exported_from_medium: "November 10, 2025"
+canonical_link: "https://medium.com/@kyle-t-jones/nonparametric-regression-using-k-nn-for-correlated-data-in-python-example-with-labor-1cb71a84479b"
+---
+
 # Nonparametric Regression using k-NN for Correlated Data in Python
 
-(example with labor... In practice, data rarely arrive as clean, independent observations.
-Instead, we deal with sequences --- sensor logs, financial returns,
-or...
+(example with labor... In practice, data rarely arrive as clean, independent observations. Instead, we deal with sequences --- sensor logs, financial returns, or...
 
 ### Nonparametric Regression using k-NN for Correlated Data in Python (example with labor participation rate)
-In practice, data rarely arrive as clean, independent observations.
-Instead, we deal with sequences --- sensor logs, financial returns, or
-monthly labor force reports --- where one point affects the next. This
-chapter tackles nonparametric regression in such correlated settings.
-We'll focus on stationary sequences and uniform mixing, and show how
-familiar techniques like kernel smoothing and k-nearest neighbors (k-NN)
-extend to handle these challenges. We'll also dig into Python
-implementations with real-world time series.
+In practice, data rarely arrive as clean, independent observations. Instead, we deal with sequences --- sensor logs, financial returns, or monthly labor force reports --- where one point affects the next. This chapter tackles nonparametric regression in such correlated settings. We'll focus on stationary sequences and uniform mixing, and show how familiar techniques like kernel smoothing and k-nearest neighbors (k-NN) extend to handle these challenges. We'll also dig into Python implementations with real-world time series.
 
 ### Regression for Dependent Sequences
-Let (Xt,Yt) be a strictly stationary sequence: the joint distribution is
-invariant under time shifts. We assume dependence weakens over time but
-does not disappear. Our goal is to estimate:
+Let (Xt,Yt) be a strictly stationary sequence: the joint distribution is invariant under time shifts. We assume dependence weakens over time but does not disappear. Our goal is to estimate:
 
 m(x)=E\[Yt∣Xt=x\]
 
-using methods that remain valid under correlation. The usual tricks for
-independent data break down unless we adjust for the dependence
-structure.
+using methods that remain valid under correlation. The usual tricks for independent data break down unless we adjust for the dependence structure.
 
-To control the dependency, we require a uniform mixing condition to
-ensure distant observations behave almost independently, so large-sample
-approximations (like the Central Limit Theorem) still apply.
+To control the dependency, we require a uniform mixing condition to ensure distant observations behave almost independently, so large-sample approximations (like the Central Limit Theorem) still apply.
 
-k-NN estimates the regression function by averaging over the k closest
-neighbors.
+k-NN estimates the regression function by averaging over the k closest neighbors.
 
-In the dependent case, consistency still holds under mixing, but with
-slower convergence and inflated variance due to autocorrelation. We must
-ensure that k→∞ and k/n→0 while mixing coefficients decay fast
-enough --- ideally geometrically.
+In the dependent case, consistency still holds under mixing, but with slower convergence and inflated variance due to autocorrelation. We must ensure that k→∞ and k/n→0 while mixing coefficients decay fast enough --- ideally geometrically.
 
 **Labor Force Participation (CIVPART)**
 
@@ -99,20 +87,15 @@ print(f'MAPE (Smoothed vs. Original): {mape:.4f}')
 ```
 
 
-MAPE is 0.0012 which is what we would expect for a smoothing method
-Smoothing helps us understand the history but isn't useful for
-prediction.
+MAPE is 0.0012 which is what we would expect for a smoothing method Smoothing helps us understand the history but isn't useful for prediction.
 
 The Nadaraya-Watson estimator smooths the data with dependent inputs.
 
-For mixing sequences, this remains consistent. Bias stays at O(h²), but
-the variance reflects autocovariance across lags. Standard bandwidth
-selection methods may underperform, as they often assume independence.
+For mixing sequences, this remains consistent. Bias stays at O(h²), but the variance reflects autocovariance across lags. Standard bandwidth selection methods may underperform, as they often assume independence.
 
 **Example: Kernel Smoothing of Labor Force Data**
 
-We'll predict the labor force participation rate using lagged values.
-First, we create lag features, then apply k-NN.
+We'll predict the labor force participation rate using lagged values. First, we create lag features, then apply k-NN.
 
 ``` 
 # Prepare lagged features for k-NN regression
@@ -150,29 +133,9 @@ plt.show()
 ```
 
 
-This k-NN regression does a pretty good job of matching the data. It
-obviously misses the decrease in labor participation that was caused by
-COVID-19 in 2020.
+This k-NN regression does a pretty good job of matching the data. It obviously misses the decrease in labor participation that was caused by COVID-19 in 2020.
 
 ### What If the Errors Are Dependent?
-There are a few things we can do to deal with serially dependent errors.
-We can use Newey-West estimators to adjust for autocorrelation. We can
-apply block bootstrapping to respect the structure. We can use
-subsampling to thin out correlation but this causes loses information.
-We can choose the bandwidth parameter to correct for over-smoothing or
-under-smoothing in the presence of correlation.
+There are a few things we can do to deal with serially dependent errors. We can use Newey-West estimators to adjust for autocorrelation. We can apply block bootstrapping to respect the structure. We can use subsampling to thin out correlation but this causes loses information. We can choose the bandwidth parameter to correct for over-smoothing or under-smoothing in the presence of correlation.
 
-Nonparametric regression methods can handle correlation. Mixing
-conditions like uniform mixing let us extend theoretical guarantees to
-k-NN and kernel smoothers. But correlation inflates variance,
-complicates inference, and warps bandwidth choice. When errors are
-correlated, adjustments like block bootstrap or long-run variance
-estimation are essential. In practice, these tools let us work with data
-as they are: messy, temporal, and richly dependent.
-::::::::By [Kyle Jones](https://medium.com/@kyle-t-jones) on
-[March 30, 2025](https://medium.com/p/1cb71a84479b).
-
-[Canonical
-link](https://medium.com/@kyle-t-jones/nonparametric-regression-using-k-nn-for-correlated-data-in-python-example-with-labor-1cb71a84479b)
-
-Exported from [Medium](https://medium.com) on November 10, 2025.
+Nonparametric regression methods can handle correlation. Mixing conditions like uniform mixing let us extend theoretical guarantees to k-NN and kernel smoothers. But correlation inflates variance, complicates inference, and warps bandwidth choice. When errors are correlated, adjustments like block bootstrap or long-run variance estimation are essential. In practice, these tools let us work with data as they are: messy, temporal, and richly dependent.
