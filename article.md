@@ -25,7 +25,7 @@ k-NN estimates the regression function by averaging over the k closest neighbors
 
 In the dependent case, consistency still holds under mixing, but with slower convergence and inflated variance due to autocorrelation. We must ensure that k→∞ and k/n→0 while mixing coefficients decay fast enough --- ideally geometrically.
 
-**Labor Force Participation (CIVPART)**
+Labor Force Participation (CIVPART)
 
 ```python
 import pandas as pd
@@ -93,7 +93,7 @@ The Nadaraya-Watson estimator smooths the data with dependent inputs.
 
 For mixing sequences, this remains consistent. Bias stays at O(h²), but the variance reflects autocovariance across lags. Standard bandwidth selection methods may underperform, as they often assume independence.
 
-**Example: Kernel Smoothing of Labor Force Data**
+Example: Kernel Smoothing of Labor Force Data
 
 We'll predict the labor force participation rate using lagged values. First, we create lag features, then apply k-NN.
 
