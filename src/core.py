@@ -3,9 +3,7 @@
 import pandas as pd
 import numpy as np
 from pathlib import Path
-from typing import Tuple
 from sklearn.neighbors import KNeighborsRegressor
-from sklearn.metrics import mean_squared_error
 from statsmodels.nonparametric.kernel_regression import KernelReg
 import matplotlib.pyplot as plt
 import logging
@@ -26,7 +24,7 @@ def create_lag_features(data: pd.DataFrame, max_lag: int = 7, target_col: str = 
         data[f'lag_{lag}'] = data[target_col].shift(lag)
     return data.dropna()
 
-def split_time_series(data: pd.DataFrame, split_date: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def split_time_series(data: pd.DataFrame, split_date: str) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Split time series data at specified date."""
     train = data[:split_date]
     test = data[split_date:]
