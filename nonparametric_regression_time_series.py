@@ -1,77 +1,86 @@
-import pandas as pd
-import numpy as np
-from sklearn.neighbors import KNeighborsRegressor
-from sklearn.metrics import mean_squared_error
-import matplotlib.pyplot as plt
-from statsmodels.nonparametric.kernel_regression import KernelReg
 import logging
 
-# --- Load and Prepare Data ---
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from sklearn.metrics import mean_squared_error
+from sklearn.neighbors import KNeighborsRegressor
+from statsmodels.nonparametric.kernel_regression import KernelReg
 
-# Configure logging
-logging.basicConfig(level=logging.INFO, format='%(message)s')
 
-url = 'https://raw.githubusercontent.com/jbrownlee/Datasets/master/daily-min-temperatures.csv'
-data = pd.read_csv(url, parse_dates=['Date'], index_col='Date')
+def main():
+    # --- Load and Prepare Data ---
 
-# Plot the time series
-data.plot(figsize=(12, 6))
-plt.title('Daily Minimum Temperatures in Melbourne')
-plt.ylabel('Temperature (°C)')
-plt.tight_layout()
-plt.savefig('raw_temperatures.png')
-plt.show()
+    # Configure logging
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
 
-# --- Feature Engineering: Create lag features ---
-for lag in range(1, 8):
-    data[f'lag_{lag}'] = data['Temp'].shift(lag)
-data.dropna(inplace=True)
+    url = "https://raw.githubusercontent.com/jbrownlee/Datasets/master/daily-min-temperatures.csv"
+    data = pd.read_csv(url, parse_dates=["Date"], index_col="Date")
 
-# --- Split Data ---
-train = data[:'1988']
-test = data['1989':]
-X_train = train.drop('Temp', axis=1)
-y_train = train['Temp']
-X_test = test.drop('Temp', axis=1)
-y_test = test['Temp']
+    # Plot the time series
+    data.plot(figsize=(12, 6))
+    plt.title("Daily Minimum Temperatures in Melbourne")
+    plt.ylabel("Temperature (°C)")
+    plt.tight_layout()
+    plt.savefig("raw_temperatures.png")
+    plt.show()
 
-# --- Train k-NN Regressor ---
-knn = KNeighborsRegressor(n_neighbors=5)
-knn.fit(X_train, y_train)
-y_pred_knn = knn.predict(X_test)
+    # --- Feature Engineering: Create lag features ---
+    for lag in range(1, 8):
+        data[f"lag_{lag}"] = data["Temp"].shift(lag)
+    data.dropna(inplace=True)
 
-# --- Evaluate k-NN ---
-mse_knn = mean_squared_error(y_test, y_pred_knn)
-logging.info(f'k-NN Mean Squared Error: {mse_knn:.2f}')
+    # --- Split Data ---
+    train = data[:"1988"]
+    test = data["1989":]
+    X_train = train.drop("Temp", axis=1)
+    y_train = train["Temp"]
+    X_test = test.drop("Temp", axis=1)
+    y_test = test["Temp"]
 
-# --- Plot k-NN results ---
-plt.figure(figsize=(12, 6))
-plt.plot(y_test.index, y_test, label='Actual')
-plt.plot(y_test.index, y_pred_knn, label='Predicted')
-plt.title('k-NN Regression: Actual vs Predicted Temperatures')
-plt.xlabel('Date')
-plt.ylabel('Temperature (°C)')
-plt.legend()
-plt.tight_layout()
-plt.savefig('knn_predictions.png')
-plt.show()
+    # --- Train k-NN Regressor ---
+    knn = KNeighborsRegressor(n_neighbors=5)
+    knn.fit(X_train, y_train)
+    y_pred_knn = knn.predict(X_test)
 
-# --- Kernel Smoothing ---
-data_reset = data.reset_index()
-data_reset['Time'] = np.arange(len(data_reset))  # Time variable
+    # --- Evaluate k-NN ---
+    mse_knn = mean_squared_error(y_test, y_pred_knn)
+    logging.info(f"k-NN Mean Squared Error: {mse_knn:.2f}")
 
-# Kernel regression with Gaussian kernel
-kr = KernelReg(endog=[data_reset['Temp']], exog=[data_reset['Time']], var_type='c', bw='cv_ls')
-y_pred_kernel, _ = kr.fit([data_reset['Time']])
+    # --- Plot k-NN results ---
+    plt.figure(figsize=(12, 6))
+    plt.plot(y_test.index, y_test, label="Actual")
+    plt.plot(y_test.index, y_pred_knn, label="Predicted")
+    plt.title("k-NN Regression: Actual vs Predicted Temperatures")
+    plt.xlabel("Date")
+    plt.ylabel("Temperature (°C)")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig("knn_predictions.png")
+    plt.show()
 
-# --- Plot Kernel Smoothing results ---
-plt.figure(figsize=(12, 6))
-plt.plot(data_reset['Date'], data_reset['Temp'], label='Original', alpha=0.5)
-plt.plot(data_reset['Date'], y_pred_kernel, label='Smoothed', color='red')
-plt.title('Kernel Smoothing of Daily Minimum Temperatures')
-plt.xlabel('Date')
-plt.ylabel('Temperature (°C)')
-plt.legend()
-plt.tight_layout()
-plt.savefig('kernel_smoothing.png')
-plt.show()
+    # --- Kernel Smoothing ---
+    data_reset = data.reset_index()
+    data_reset["Time"] = np.arange(len(data_reset))  # Time variable
+
+    # Kernel regression with Gaussian kernel
+    kr = KernelReg(
+        endog=[data_reset["Temp"]], exog=[data_reset["Time"]], var_type="c", bw="cv_ls"
+    )
+    y_pred_kernel, _ = kr.fit([data_reset["Time"]])
+
+    # --- Plot Kernel Smoothing results ---
+    plt.figure(figsize=(12, 6))
+    plt.plot(data_reset["Date"], data_reset["Temp"], label="Original", alpha=0.5)
+    plt.plot(data_reset["Date"], y_pred_kernel, label="Smoothed", color="red")
+    plt.title("Kernel Smoothing of Daily Minimum Temperatures")
+    plt.xlabel("Date")
+    plt.ylabel("Temperature (°C)")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig("kernel_smoothing.png")
+    plt.show()
+
+
+if __name__ == "__main__":
+    main()
